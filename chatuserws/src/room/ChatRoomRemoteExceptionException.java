@@ -10,7 +10,7 @@ package room;
 
 public class ChatRoomRemoteExceptionException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1611626488814L;
+    private static final long serialVersionUID = 1612386633271L;
     
     private room.ChatRoomStub.ChatRoomRemoteException faultMessage;
 

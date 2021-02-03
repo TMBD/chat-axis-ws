@@ -15,7 +15,7 @@ import room.ChatRoomStub.UnsubscribeResponse;
 
 import room.ChatRoomStub.PostMessage;
 import room.ChatRoomStub.PostMessageResponse;
-
+import room.ChatRoomStub.ArrayOfString;
 import room.ChatRoomStub.GetMessage;
 import room.ChatRoomStub.GetMessageResponse;
 
@@ -154,9 +154,13 @@ public class ChatUser {
 				getMessage.setPseudo(this.pseudo);
 				getMessageResponse = chatRoomStub.getMessage(getMessage);
 				System.err.println("Got a message : return value = "+getMessageResponse.get_return());
-				String message = getMessageResponse.get_return();
+				ArrayOfString[] messagesArrayOfString = getMessageResponse.get_return();
 				TimeUnit.SECONDS.sleep(SLEEP_TIME);
-                if(message != "") this.displayMessage(message);
+				for (int i = 0; i < messagesArrayOfString.length; i++) {
+					String[] messageArray = messagesArrayOfString[i].getArray();
+					String message = buildMessage(messageArray[0] ,messageArray[1]);
+					if(message != null) this.displayMessage(message);
+				}
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -164,7 +168,14 @@ public class ChatUser {
     }
 
     
-    public static void main(String[] args) {
+    private String buildMessage(String pseudo, String message) {
+    	if(pseudo == null || message == null || message.equals("")) return null;
+    	if(pseudo.equals("")) return " "+message+"\n\n\n";
+    	return " "+pseudo+" a dit : \n   "+message+"\n\n\n";
+	}
+
+
+	public static void main(String[] args) {
         ChatUser user = new ChatUser();
         user.start();
     }
